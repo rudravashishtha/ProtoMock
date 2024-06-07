@@ -1,7 +1,7 @@
 import { pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
 
 export const schema = pgTable("protomock", {
-  id: serial("id ").primaryKey(),
+  id: serial("id").primaryKey().notNull(),
   jsonMockResp: text("jsonMockResp").notNull(),
   jobPosition: varchar("jobPosition").notNull(),
   jobDesc: varchar("jobDesc").notNull(),
