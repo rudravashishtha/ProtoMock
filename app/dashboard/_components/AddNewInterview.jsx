@@ -15,6 +15,7 @@ import { schema } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import { LoaderCircle, X } from "lucide-react";
 import moment from "moment";
+import { useRouter } from 'next/navigation'
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,6 +28,7 @@ function AddNewInterview() {
   const [loading, setLoading] = useState(false);
   const [jsonResponse, setJsonResponse] = useState([]);
   const { user } = useUser();
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     setLoading(true);
@@ -59,13 +61,15 @@ function AddNewInterview() {
           jobPosition: jobPosition,
           jobDesc: jobDesc,
           jobExperience: jobExperience,
+          numberOfQuestions: numberofQuestions,
           createdBy: user?.primaryEmailAddress?.emailAddress,
-          createdAt: moment().format("DD--MM=YYYY HH:mm:ss"),
+          createdAt: moment().format("DD-MM-YYYY HH:mm:ss"),
         })
         .returning({ mockId: schema.mockId });
       // console.log("Id: ", resp);
       if (resp) {
         setOpenDialog(false);
+        router.push(`/dashboard/interview/${resp[0]?.mockId}`);
       }
     }
     else {
